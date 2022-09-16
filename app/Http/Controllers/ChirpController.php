@@ -53,7 +53,7 @@ class ChirpController extends Controller
      * @param  \App\Models\Chirp  $Chirp
      * @return \Illuminate\Http\Response
      */
-    public function show(Chirp $Chirp)
+    public function show(Chirp $chirp)
     {
         //
     }
@@ -64,7 +64,7 @@ class ChirpController extends Controller
      * @param  \App\Models\Chirp  $Chirp
      * @return \Illuminate\Http\Response
      */
-    public function edit(Chirp $Chirp)
+    public function edit(Chirp $chirp)
     {
         //
     }
@@ -76,9 +76,17 @@ class ChirpController extends Controller
      * @param  \App\Models\Chirp  $Chirp
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Chirp $Chirp)
+    public function update(Request $request, Chirp $chirp)
     {
-        //
+        $this->authorize('update', $chirp);
+
+        $validated = $request->validate([
+            'message' => ['required', 'string', 'max:255']
+        ]);
+
+        $chirp->update($validated);
+
+        return redirect(route('chirps.index'));
     }
 
     /**
@@ -87,7 +95,7 @@ class ChirpController extends Controller
      * @param  \App\Models\Chirp  $Chirp
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Chirp $Chirp)
+    public function destroy(Chirp $chirp)
     {
         //
     }
